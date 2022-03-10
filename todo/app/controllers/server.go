@@ -22,5 +22,8 @@ func StartMainServer() error {
 	http.Handle("/static/", http.StripPrefix("/static/",files))
 
 	http.HandleFunc("/",top)
+	http.HandleFunc("/signup",signup)
+	http.HandleFunc("/login",login)
+	http.HandleFunc("/auhenticate",auhtenticate)
 	return http.ListenAndServe(":"+config.Config.Port,nil)
 }
