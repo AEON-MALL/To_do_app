@@ -43,6 +43,9 @@ func login(w http.ResponseWriter, r *http.Request){
 
 func auhtenticate(w http.ResponseWriter, r *http.Request){
 	err := r.ParseForm()
+	if err != nil{
+		log.Println(err)
+	}
 	user, err := models.GetUserByEmail(r.PostFormValue("email"))
 	if err != nil {
 		log.Println(err)
@@ -65,4 +68,16 @@ func auhtenticate(w http.ResponseWriter, r *http.Request){
 	}else{
 		http.Redirect(w,r,"/login",http.StatusFound)
 	}
+}
+
+func logout(w http.ResponseWriter, r *http.Request){
+	cookie, err := r.Cookie("_cookie")
+	if err != nil {
+		log.Println(err)
+	}
+	if err != http.ErrNoCookie{
+		session := models.Session{UUID: cookie.Value}
+		session.DeleteSessionByUUID()
+	}
+	http.Redirect(w,r,"/login",http.StatusFound)
 }

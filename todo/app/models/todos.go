@@ -13,10 +13,7 @@ type Todo struct {
 }
 
 func (u *User) CreateTodo(content string)(err error){
-	cmd := `insert into todos (
-		content,
-		user_id,
-		created_at) values (?,?,?)`
+	cmd := `insert into todos (content, user_id, created_at) values (?,?,?)`
 
 	_, err = Db.Exec(cmd, content,u.ID , time.Now())
 	if err != nil{
@@ -26,8 +23,7 @@ func (u *User) CreateTodo(content string)(err error){
 }
 
 func GetTodo(id int)(todo Todo, err error){
-	cmd := `select id, content, user_id,created_at from todos 
-	where id = ?`
+	cmd := `select id, content, user_id,created_at from todos where id = ?`
 	todo = Todo{}
 
 	err = Db.QueryRow(cmd,id).Scan(
@@ -65,8 +61,7 @@ func GetTodos() (todos []Todo, err error){
 }
 
 func (u *User) GetTodosByUser() (todos []Todo, err error){
-	cmd := `select id, content, user_id, created_at from todos
-	where user_id = ?`
+	cmd := `select id, content, user_id, created_at from todos where user_id = ?`
 
 	rows, err := Db.Query(cmd, u.ID)
 	if err != nil{
@@ -91,8 +86,7 @@ func (u *User) GetTodosByUser() (todos []Todo, err error){
 }
 
 func(t *Todo) UpdateTodo() error {
-	cmd := `update todos set content = ? , user_id = ?
-		where id = ?`
+	cmd := `update todos set content = ? , user_id = ? where id = ?`
 	_, err = Db.Exec(cmd, t.Content, t.UserID, t.ID)
 	if err != nil{
 		log.Fatalln(err)

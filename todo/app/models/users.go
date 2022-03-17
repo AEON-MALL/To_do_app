@@ -23,13 +23,7 @@ type Session struct{
 }
 
 func (u *User) CreateUser() (err error){
-	cmd := `insert into users(
-		uuid,
-		name,
-		email,
-		password,
-		created_at
-	) values (?,?,?,?,?)`
+	cmd := `insert into users(uuid, name, email, password, created_at) values (?,?,?,?,?)`
 
 	_ , err = Db.Exec(cmd,
 		createUUID(),
@@ -68,7 +62,7 @@ func (u *User) UpdateUser() (err error){
 }
 
 func (u *User) DeleteUser()(err error){
-	cmd := `delete from users where id =?`
+	cmd := `delete from users where id = ?`
 	_ , err = Db.Exec(cmd, u.ID)
 	if err != nil {
 		log.Fatalln(err)
@@ -79,7 +73,8 @@ func (u *User) DeleteUser()(err error){
 func GetUserByEmail(email string)(user User, err error){
 	user = User{}
 	cmd := `select id, uuid, name, email, password, created_at from users where email = ?`
-	err = Db.QueryRow(cmd, email).Scan(&user.ID,
+	err = Db.QueryRow(cmd, email).Scan(
+		&user.ID,
 		&user.UUID, 
 		&user.Email, 
 		&user.PassWord, 
@@ -90,20 +85,17 @@ func GetUserByEmail(email string)(user User, err error){
 
 func (u *User) CreateSession() (session Session, err error){
 	session = Session{}
-	cmd1 := `insert into sessions (uuid, 
-		email, 
-		user_id, 
-		created_at) values (?,?,?,?)`
+	cmd1 := `insert into sessions (uuid, email, user_id, created_at) values (?,?,?,?)`
 	
 	_ , err = Db.Exec(cmd1, createUUID(), u.Email, u.ID, time.Now())
 	if err != nil {
 		log.Println(err)
 	}
 
-	cmd2 := `select id, uuid, email, user_id, created_at 
-	from sessions where user_id = ? and email = ?`
+	cmd2 := `select id, uuid, email, user_id, created_at from sessions where user_id = ? and email = ?`
 
-	err = Db.QueryRow(cmd2, u.ID, u.Email).Scan(&session.ID, 
+	err = Db.QueryRow(cmd2, u.ID, u.Email).Scan(
+		&session.ID, 
 		&session.UUID, 
 		&session.Email, 
 		&session.UserID, 
@@ -113,10 +105,10 @@ func (u *User) CreateSession() (session Session, err error){
 }
 
 func (sess *Session) CheckSession() (valid bool, err error){
-	cmd := `select id, uuid, email, user_id, created_at 
-			from sessions where uuid = ?`
+	cmd := `select id, uuid, email, user_id, created_at from sessions where uuid = ?`
 
-	err = Db.QueryRow(cmd, sess.UUID).Scan(&sess.ID,
+	err = Db.QueryRow(cmd, sess.UUID).Scan(
+		&sess.ID,
 		&sess.UUID, 
 		&sess.Email,
 		&sess.UserID, 
@@ -130,4 +122,13 @@ func (sess *Session) CheckSession() (valid bool, err error){
 		valid = true
 	}
 	return valid, err
+}
+
+func (sess *Session) DeleteSessionByUUID() (err error){
+	cmd :=`delete from sessions where uuid = ? `
+	_ , err = Db.Exec(cmd, sess.UUID)
+	if err != nil{
+		log.Println(err)
+	}
+	return err
 }
