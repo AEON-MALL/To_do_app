@@ -12,9 +12,10 @@ type User struct {
 	Email     string
 	PassWord  string
 	CreatedAt time.Time
+	Todos	[]Todo
 }
 
-type Session struct{
+type Session struct {
 	ID int
 	UUID string
 	Email string
@@ -85,7 +86,7 @@ func GetUserByEmail(email string)(user User, err error){
 
 func (u *User) CreateSession() (session Session, err error){
 	session = Session{}
-	cmd1 := `insert into sessions (uuid, email, user_id, created_at) values (?,?,?,?)`
+	cmd1 := `insert into sessions (uuid, email, user_id, created_at) values (?, ?, ?, ?)`
 	
 	_ , err = Db.Exec(cmd1, createUUID(), u.Email, u.ID, time.Now())
 	if err != nil {
@@ -131,4 +132,17 @@ func (sess *Session) DeleteSessionByUUID() (err error){
 		log.Println(err)
 	}
 	return err
+}
+
+func (sess *Session) GetUserBySession() (user User, err error){
+	user = User{}
+	cmd := `select id, uuid, name, email, created_at from users where id = ?`
+	err = Db.QueryRow(cmd, sess.UserID).Scan(
+		&user.ID,
+		&user.UUID,
+		&user.Name,
+		&user.Email,
+		&user.CreatedAt)
+
+	return user, err
 }

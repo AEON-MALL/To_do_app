@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	//"log"
 	"todo/app/controllers"
 	"todo/app/models"
-	//"todo/config"
 )
 
 func main() {

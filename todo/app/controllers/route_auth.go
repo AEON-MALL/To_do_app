@@ -52,7 +52,7 @@ func auhtenticate(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w,r,"/login",http.StatusFound)
 	}
 	if user.PassWord == models.Encrypt(r.PostFormValue("password")){
-		session , err := user.CreateSession()
+		session, err := user.CreateSession()
 		if err != nil{
 			log.Println(err)
 		}

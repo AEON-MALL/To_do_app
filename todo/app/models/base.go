@@ -46,7 +46,7 @@ func init(){
 	Db.Exec(cmdT)
 
 	cmdS := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
-		id INTEGER PRIMARY KEY AUTOINCTREMENT,
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uuid STRING NOT NULL UNIQUE,
 		email STRING,
 		user_id INTEGER,
