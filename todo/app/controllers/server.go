@@ -31,7 +31,11 @@ func session(w http.ResponseWriter, r *http.Request) (sess models.Session, err e
 	return sess, err
 }
 
+<<<<<<< HEAD
 var validPath = regexp.MustCompile("^/todos/(edit|update|delete)/([0-9]+)$")
+=======
+var validPath = regexp.MustCompile("^/todos/(edit|update|delete)/([0-9]+$)")
+>>>>>>> origin/main
 
 func parseURL(fn func(http.ResponseWriter, *http.Request, int)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +61,11 @@ func StartMainServer() error {
 	http.HandleFunc("/", top)
 	http.HandleFunc("/signup", signup)
 	http.HandleFunc("/login", login)
+<<<<<<< HEAD
 	http.HandleFunc("/authenticate", authenticate)
+=======
+	http.HandleFunc("/auhenticate", auhtenticate)
+>>>>>>> origin/main
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/todos", index)
 	http.HandleFunc("/todos/new", todoNew)

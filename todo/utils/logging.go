@@ -7,7 +7,11 @@ import (
 )
 
 func LoggingSettings(logFile string) {
+<<<<<<< HEAD
 	logfile, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+=======
+	logfile, err := os.OpenFile(logFile,os.O_RDWR|os.O_CREATE|os.O_APPEND,0666)
+>>>>>>> origin/main
 	if err != nil {
 		log.Fatalln(err)
 	}
