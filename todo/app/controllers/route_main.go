@@ -7,11 +7,7 @@ import (
 )
 
 func top(w http.ResponseWriter, r *http.Request){
-<<<<<<< HEAD
 	_, err := session(w, r)
-=======
-	_ , err := session(w,r)
->>>>>>> origin/main
 	if err != nil{
 		generateHTML(w, "Hello", "layout", "public_navbar" ,"top")
 	}else{
@@ -23,10 +19,7 @@ func top(w http.ResponseWriter, r *http.Request){
 func index(w http.ResponseWriter, r *http.Request){
 	sess, err := session(w, r)
 	if err != nil {
-<<<<<<< HEAD
 		log.Println(err)
-=======
->>>>>>> origin/main
 		http.Redirect(w, r, "/", http.StatusFound)
 	}else{
 		user, err := sess.GetUserBySession()
@@ -40,11 +33,7 @@ func index(w http.ResponseWriter, r *http.Request){
 }
 
 func todoNew(w http.ResponseWriter, r *http.Request){
-<<<<<<< HEAD
 	_, err := session(w, r)
-=======
-	_ , err := session(w, r)
->>>>>>> origin/main
 	if err != nil{
 		http.Redirect(w, r, "/login", http.StatusFound)
 	} else {
